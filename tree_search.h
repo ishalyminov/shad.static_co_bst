@@ -1,7 +1,7 @@
 #pragma once
 
 #include "tree.h"
-#include "balanced_bst.h"
+#include "static_bst.h"
 
 template <typename TreeT>
 uint64_t get_child(const TreeT& in_tree, uint64_t in_node, ChildPos in_pos)

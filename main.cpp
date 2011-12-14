@@ -2,9 +2,8 @@
 #include <cstdlib>
 
 #include "tree.h"
-#include "balanced_bst.h"
+#include "static_bst.h"
 #include "tree_search.h"
-#include "layout.h"
 
 void check_tree_node_size()
 {
@@ -15,13 +14,6 @@ void check_tree_node_size()
 
 int main()
 {
-    size_t h(15);
-    for (size_t i = 1; i <= size_t((1 << h) - 1); ++i)
-    {
-        std::cout << "BFS " << i << " :: vEB " << bfs_to_veb(i, h) << '\n';
-    }
-    return 0;
-
     // for randomized tree contents generation
     srand(239);
 
