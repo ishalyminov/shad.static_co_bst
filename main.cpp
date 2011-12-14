@@ -4,6 +4,7 @@
 #include "tree.h"
 #include "static_bst.h"
 #include "tree_search.h"
+#include "layouts.h"
 
 extern "C"
 {
@@ -37,8 +38,6 @@ int main()
     // for randomized tree contents generation
     srand(239);
 
-    check_things();
-
     std::vector<uint64_t> tree_data(15);
     for (size_t index = 0; index < tree_data.size(); ++index)
     {
@@ -49,6 +48,6 @@ int main()
     std::cout << "Created successfully\n";
 
     explicit_tree_t inorder_layout_tree;
-    make_bfs_layout(bst, &inorder_layout_tree);
+    make_veb_layout(bst, &inorder_layout_tree);
     std::cout << tree_data[1] << ": " << search(inorder_layout_tree, tree_data[1]) << '\n';
 }
