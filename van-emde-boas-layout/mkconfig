@@ -1,0 +1,3 @@
+PREFIX=$HOME
+INCS=-I$HOME/include
+LIBS=-L$HOME/lib

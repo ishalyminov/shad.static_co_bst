@@ -1,0 +1,21 @@
+MKSHELL=$PLAN9/bin/rc
+
+<$PLAN9/src/mkhdr
+
+<mkconfig
+
+CFLAGS=-g -O0 '-std=c99' -fms-extensions
+#CFLAGS=-g -O0 '-std=c99' -fms-extensions -fprofile-arcs -ftest-coverage
+#LDFLAGS=-fprofile-arcs
+
+CFILES=\
+	veb.c\
+
+OFILES=${CFILES:%.c=%.$O}
+
+HFILES=\
+	veb.h\
+
+default:V:	veb.$O
+
+<$PLAN9/src/mkone
