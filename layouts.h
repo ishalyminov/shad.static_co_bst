@@ -41,6 +41,7 @@ void make_inorder_layout(const StaticBst& in_bst, TreeT* out_result)
     }
 
     out_result->root_index = in_bst.GetRootIndex();
+    out_result->layout_type = INORDER;
 }
 
 template<class TreeT>
@@ -87,6 +88,7 @@ void make_bfs_layout(const StaticBst& in_bst, TreeT* out_result)
     }
 
     out_result->root_index = 0;
+    out_result->layout_type = BFS;
 }
 
 template<typename TreeT>
@@ -102,9 +104,14 @@ void make_veb_layout(const StaticBst& in_bst, TreeT* out_result)
         const typename TreeT::node_t& bfs_node(bfs_tree.nodes[bfs_node_index]);
         typename TreeT::node_t new_node;
         new_node.key = bfs_node.key;
+
         uint64_t
-            left_child = vebpos(veb_layout, bfs_node.left_child),
-            right_child = vebpos(veb_layout, bfs_node.right_child);
+            left_bfs_child(calculate_bfs_child_index(bfs_tree, bfs_node_index, LEFT)),
+            right_bfs_child(calculate_bfs_child_index(bfs_tree, bfs_node_index, RIGHT));
+
+        uint64_t
+            left_child(vebpos(veb_layout, left_bfs_child)),
+            right_child(vebpos(veb_layout, right_bfs_child));
 
         link_children(&new_node, left_child, right_child);
 
@@ -113,4 +120,5 @@ void make_veb_layout(const StaticBst& in_bst, TreeT* out_result)
     }
 
     out_result->root_index = vebpos(veb_layout, 0);
+    out_result->layout_type = VEB;
 }

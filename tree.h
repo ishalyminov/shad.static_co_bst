@@ -23,6 +23,7 @@ template<typename NodeT>
 struct tree_t
 {
     typedef NodeT node_t;
+    TreeLayout layout_type;
     static uint64_t NIL_INDEX;
     uint64_t root_index;
     std::vector<node_t> nodes;

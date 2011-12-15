@@ -1,2 +1,4 @@
 Static Cache-Oblivious Binary Search Tree
-Layouts performance comparison: BFS, in-order, van Emde Boas (X) 
+Layouts performance comparison: BFS, in-order, van Emde Boas
+
+For help run without arguments 
