@@ -48,11 +48,11 @@ uint64_t calculate_bfs_child_index(const TreeT& in_tree, uint64_t in_node, Child
     uint64_t index(0);
     if (in_pos == LEFT)
     {
-        index = (in_pos + 1) * 2 - 1;
+        index = (in_node + 1) * 2 - 1;
     }
     else
     {
-        index = (in_pos + 1) * 2;
+        index = (in_node + 1) * 2;
     }
 
     if (index >= in_tree.nodes.size())
