@@ -58,20 +58,29 @@ void create_layout(const StaticBst& in_bst, TreeT* out_result, const std::string
 }
 
 template<typename TreeT>
-void search_queries(const TreeT& in_tree, size_t in_queries_number)
+double search_queries(const TreeT& in_tree, const std::vector<uint64_t>& in_search_data)
 {
-    for (size_t index = 0; index < in_queries_number; ++index)
+    time_t
+        begin,
+        end;
+    std::vector<uint64_t> search_requests(in_search_data);
+    std::random_shuffle(search_requests.begin(), search_requests.end());
+
+    begin = clock();
+    for (size_t index = 0; index < search_requests.size(); ++index)
     {
-        search(in_tree, rand());
+        search(in_tree, search_requests[index]);
     }
+    end = clock();
+
+    return (end - begin) / static_cast<double>(CLOCKS_PER_SEC);
 }
 
 void perform_experiment(const std::string& in_layout_name,
                         const std::string& in_indexing_type,
-                        size_t in_tree_levels, int in_queries_num)
+                        size_t in_tree_levels)
 {
     std::vector<uint64_t> tree_data((1 << in_tree_levels) - 1);
-    size_t queries_number(in_queries_num != -1 ? in_queries_num : tree_data.size());
 
     for (size_t index = 0; index < tree_data.size(); ++index)
     {
@@ -81,40 +90,25 @@ void perform_experiment(const std::string& in_layout_name,
     StaticBst bst(tree_data);
     std::cout << "BST created successfully\n";
 
-    double time(0.);
     if (in_indexing_type == "implicit")
     {
         implicit_tree_t custom_layout_tree;
         create_layout(bst, &custom_layout_tree, in_layout_name);
 
-        time_t
-            begin,
-            end;
-        begin = clock();
-        search_queries(custom_layout_tree, queries_number);
-        end = clock();
-        time = (end - begin) / (double) CLOCKS_PER_SEC;
+        std::cout << "RESULT: " << search_queries(custom_layout_tree, tree_data) << " seconds taken\n";
     }
     else if (in_indexing_type == "explicit")
     {
         explicit_tree_t custom_layout_tree;
         create_layout(bst, &custom_layout_tree, in_layout_name);
 
-        time_t
-            begin,
-            end;
-        begin = clock();
-        search_queries(custom_layout_tree, queries_number);
-        end = clock();
-        time = (end - begin) / (double) CLOCKS_PER_SEC;
+        std::cout << "RESULT: " << search_queries(custom_layout_tree, tree_data) << " seconds taken\n";
     }
     else
     {
         std::cout << "Wrong indexing type\n";
         return;
     }
-
-    std::cout << "RESULT: " << time << " seconds taken\n";
 }
 
 /*
@@ -127,14 +121,8 @@ int main(int argc, char* argv[])
     if (argc < 4)
     {
         std::cout <<
-            "Usage: static_co_bst <layout_type: inorder | bfs | veb> <node indexing type> <BST levels number> [search queries_number: default = # tree nodes]";
+            "Usage: static_co_bst <layout_type: inorder | bfs | veb> <node indexing type> <BST levels number>";
         return 0;
-    }
-
-    int queries_num(-1);
-    if (argc == 5)
-    {
-        queries_num = atol(argv[4]);
     }
 
     size_t levels_num(atol(argv[3]));
@@ -142,5 +130,5 @@ int main(int argc, char* argv[])
     // for randomized tree contents generation
     srand(239);
 
-    perform_experiment(argv[1], argv[2], levels_num, queries_num);
+    perform_experiment(argv[1], argv[2], levels_num);
 }
